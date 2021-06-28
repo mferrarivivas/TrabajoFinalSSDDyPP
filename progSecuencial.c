@@ -25,7 +25,7 @@ typedef struct celda{
 
 void inicializar(int n, celda *matrizInicial){
     int i, j;
-    //Inicializo primera columna coma invalida
+    //Inicializo primera columna como invalida
     for(i=0; i<n+2; i++){
         j=0;
         matrizInicial[i][j].estado=-1;
@@ -33,7 +33,7 @@ void inicializar(int n, celda *matrizInicial){
         matrizInicial[i][j].heridasAbiertas=-1;
         matrizInicial[i][j].tiempo=-1;
     }
-    //Inicializo ultima columna coma invalida
+    //Inicializo ultima columna como invalida
     for(i=0; i<n+2; i++){
         j=n+2;
         matrizInicial[i][j].estado=-1;
@@ -41,7 +41,7 @@ void inicializar(int n, celda *matrizInicial){
         matrizInicial[i][j].heridasAbiertas=-1;
         matrizInicial[i][j].tiempo=-1;
     }
-    //Inicializo primera fila coma invalida
+    //Inicializo primera fila como invalida
     for(j=1; j<n+1; j++){
         i=0;
         matrizInicial[i][j].estado=-1;
@@ -49,7 +49,7 @@ void inicializar(int n, celda *matrizInicial){
         matrizInicial[i][j].heridasAbiertas=-1;
         matrizInicial[i][j].tiempo=-1;
     }
-    //Inicializo ultima fila coma invalida
+    //Inicializo ultima fila como invalida
     for(j=1; j<n+1; j++){
         i=n+2;
         matrizInicial[i][j].estado=-1;
@@ -88,8 +88,6 @@ int main(int argc, char *argv[]) {
     inicializar(n, matrizInicial);
 
 
-
-
     //Reglas
     // Arbol sano -> Enfermo sin sintomas
     //No entiendo como hacerlo
@@ -102,7 +100,7 @@ int main(int argc, char *argv[]) {
     }
 
     //Enfermo con sintomas -> Enfermo con tratamiento antifungico
-    //90%probabilidad de ser tratadoo dejando de propagar la enfermedad
+    //90%probabilidad de ser tratado dejando de propagar la enfermedad
     //No entiendo como hacerlo
 
     //Enfermo con tratamiento antifungico -> Recuperado/Podado/Reemplazado
