@@ -21,6 +21,15 @@ typedef struct celda{
     int tiempo; //Tiempo transcurrido desde la ultima actualizacion de estado
 }celda;
 
+float susceptibilidad(int edad, int heridasAbiertas){
+    float valor = 0.0;
+    if (heridasAbiertas) valor+=0.15;
+    if (edad==Joven) valor+=0.30;
+    else    if (edad==Adulto) valor+=0.20;
+            else (edad==Viejo) valor+=0.50;
+    return valor;
+}
+
 int main() {
     printf("Hello, World!\n");
     return 0;
