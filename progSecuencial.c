@@ -94,17 +94,27 @@ float probabilidadContagio(celda *matriz,celda celda){
 }
 
 int main(int argc, char *argv[]) {
+    srand(time(NULL));
+
     //Lee la dimension
     int n = atoi(argv[1]);
+    float numRandom;
     celda celda;
 
     inicializar(n);
 
+    //!!!
+    //IMPORTANTE a todos los tiempos de las celdas sumarle 1
+
 
     //Reglas
     // Arbol sano -> Enfermo sin sintomas
-    //No entiendo como hacerlo
 
+    numRandom=(rand() % 100 + 1)/100;
+    if(numRandom<=probabilidadContagio()){
+        celda.estado=Naranja;
+        celda.tiempo=0;
+    }
 
     //Infectado con esporas -> Enfermo con sintomas
     if(celda.estado==Naranja && celda.tiempo==6){
@@ -113,27 +123,31 @@ int main(int argc, char *argv[]) {
     }
 
     //Enfermo con sintomas -> Enfermo con tratamiento antifungico
-    //90%probabilidad de ser tratado dejando de propagar la enfermedad
-    //No entiendo como hacerlo
+    numRandom=(rand() % 100 + 1)/100;
+    if(numRandom<=0.9){
+        celda.estado=Azul;
+        celda.tiempo=0;
+    }
 
     //Enfermo con tratamiento antifungico -> Recuperado/Podado/Reemplazado
-    /**
-     * No se donde meter la funcion de probabilidad basada en la edad del arbl y resistencia del hngo
-     * (Joven 1%, Adulto 10%, Viejo 45%)
-     * */
-    if(celda.estado==Azul && (celda.edad==Adulto || celda.edad==Joven)){
+    numRandom=(rand() % 100 + 1)/100;
+    if(celda.estado==Azul && celda.edad==Joven && numRandom<=0.01){
         celda.estado=Blanco;
-        celda.tiempo=1;
+        celda.tiempo=0;
     }
-    if(celda.estado==Azul && (celda.edad==Viejo)){
+    if(celda.estado==Azul && celda.edad==Adulto && numRandom<=0.10){
+        celda.estado=Blanco;
+        celda.tiempo=0;
+    }
+    if(celda.estado==Azul && celda.edad==Viejo && numRandom<=0.45){
         celda.estado=Verde;
-        celda.tiempo=1;
+        celda.tiempo=0;
     }
     
     //Arbol podado -> Arbol sano
     if(celda.estado==Blanco && celda.tiempo==7){
         celda.estado=Verde;
-        celda.tiempo=1;
+        celda.tiempo=0;
     }
 
 
