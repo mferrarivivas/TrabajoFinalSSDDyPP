@@ -36,7 +36,6 @@
 #define HERIDA_JOVEN 30
 #define HERIDA_VIEJO 50
 
-
 typedef struct celda{
     int estado; //Blanco, Azul, Rojo, Naranja, Verde
     int edad; //Joven, Adulto, Viejo
@@ -116,11 +115,11 @@ void inicializarMatriz(int n){
             }
             else if (rndom<=ADULTOS){
                 matriz[i][j].edad=ADULTO;
-                matriz[i][j].edadTiempo=4;
+                matriz[i][j].edadTiempo=208;
             }
             else{
                 matriz[i][j].edad=VIEJO;
-                matriz[i][j].edadTiempo=36;
+                matriz[i][j].edadTiempo=94692;
             }
             //Heridas
             rndom=rand()%101;
@@ -150,9 +149,10 @@ void copiarMatriz(int n){
             matrizAvanzada[i][j].heridasAbiertas=matriz[i][j].heridasAbiertas;
             matrizAvanzada[i][j].tiempo=matriz[i][j].tiempo+1; //Refleja el avance del tiempo
 
-            if(matrizAvanzada[i][j].edadTiempo<=3 && matrizAvanzada[i][j].edad!=JOVEN)matrizAvanzada[i][j].edad=JOVEN;
-            else if (matrizAvanzada[i][j].edadTiempo<=35 && matrizAvanzada[i][j].edad!=ADULTO)matrizAvanzada[i][j].edad=ADULTO;
-            else if (matrizAvanzada[i][j].edadTiempo>=36 && matrizAvanzada[i][j].edad!=VIEJO) matrizAvanzada[i][j].edad=VIEJO;
+            //1 año son 52 semanas, 3 años son 156 semanas, 35 años son 94640 semanas
+            if(matrizAvanzada[i][j].edadTiempo<=156 && matrizAvanzada[i][j].edad!=JOVEN)matrizAvanzada[i][j].edad=JOVEN;
+            else if (matrizAvanzada[i][j].edadTiempo<=94640 && matrizAvanzada[i][j].edad!=ADULTO)matrizAvanzada[i][j].edad=ADULTO;
+            else if (matrizAvanzada[i][j].edadTiempo>=94641 && matrizAvanzada[i][j].edad!=VIEJO) matrizAvanzada[i][j].edad=VIEJO;
 
         }
     }
@@ -205,6 +205,7 @@ float probabilidadContagio(int i,int j){
     return (porcentajeVecinosSintomaticos(i,j)+susceptibilidad(celda.edad,celda.heridasAbiertas))*0.60+0.05;
 }
 
+//1 tiempo es 1 semana
 int main(int argc, char *argv[]) {
     srand(time(NULL));
 
