@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#define MAXSIZE 1502 // Maximo tamaño de la Matriz
 
 #define Invalido -1
 
@@ -23,41 +27,51 @@ typedef struct celda{
     int tiempo; //Tiempo transcurrido desde la ultima actualizacion de estado
 }celda;
 
-void inicializar(int n, celda *matrizInicial){
-    int i, j;
-    //Inicializo primera columna como invalida
-    for(i=0; i<n+2; i++){
-        j=0;
-        matrizInicial[i][j].estado=-1;
-        matrizInicial[i][j].edad=-1;
-        matrizInicial[i][j].heridasAbiertas=-1;
-        matrizInicial[i][j].tiempo=-1;
+//matriz 
+celda matriz[MAXSIZE][MAXSIZE];
+
+//Input n: cantidad de celdas que contiene la matriz 
+//n={200,800,1500}
+void inicializarMatriz(int n){
+    
+    //Primera y Ultima columna invalida
+    for(int i=0; i<n+2; i++){
+        matriz[i][0].estado=-1;
+        matriz[i][0].edad=-1;
+        matriz[i][0].heridasAbiertas=-1;
+        matriz[i][0].tiempo=-1;
+
+        matriz[i][n+2].estado=-1;
+        matriz[i][n+2].edad=-1;
+        matriz[i][n+2].heridasAbiertas=-1;
+        matriz[i][n+2].tiempo=-1;
     }
-    //Inicializo ultima columna como invalida
-    for(i=0; i<n+2; i++){
-        j=n+2;
-        matrizInicial[i][j].estado=-1;
-        matrizInicial[i][j].edad=-1;
-        matrizInicial[i][j].heridasAbiertas=-1;
-        matrizInicial[i][j].tiempo=-1;
+
+    //Primera y Ultima fila invalida
+    for(int j=1; j<n+1; j++){
+    
+        matriz[0][j].estado=-1;
+        matriz[0][j].edad=-1;
+        matriz[0][j].heridasAbiertas=-1;
+        matriz[0][j].tiempo=-1;
+
+        matriz[n+2][j].estado=-1;
+        matriz[n+2][j].edad=-1;
+        matriz[n+2][j].heridasAbiertas=-1;
+        matriz[n+2][j].tiempo=-1;
     }
-    //Inicializo primera fila como invalida
-    for(j=1; j<n+1; j++){
-        i=0;
-        matrizInicial[i][j].estado=-1;
-        matrizInicial[i][j].edad=-1;
-        matrizInicial[i][j].heridasAbiertas=-1;
-        matrizInicial[i][j].tiempo=-1;
-    }
-    //Inicializo ultima fila como invalida
-    for(j=1; j<n+1; j++){
-        i=n+2;
-        matrizInicial[i][j].estado=-1;
-        matrizInicial[i][j].edad=-1;
-        matrizInicial[i][j].heridasAbiertas=-1;
-        matrizInicial[i][j].tiempo=-1;
-    }
+    //establece seed aleatorio.
+    srand(time(NULL));
     //Genero la matriz valida
+    for (int i = 1; i < n; i++){
+        for (int j = 1; i < n; i++){
+        
+        }
+        
+    }
+    
+
+
 
 }
 
@@ -71,21 +85,20 @@ float susceptibilidad(int edad, int heridasAbiertas){
     return valor;
 }
 
-float porcentajeVecinosSintomaticos(celda *matrizInicial){
+float porcentajeVecinosSintomaticos(celda *matriz){
     
 }
 
-float probabilidadContagio(celda *matrizInicial,celda celda){
-    return (porcentajeVecinosSintomaticos(matrizInicial)+susceptibilidad(celda.edad,celda.heridasAbiertas))*0.60+0.05;
+float probabilidadContagio(celda *matriz,celda celda){
+    return (porcentajeVecinosSintomaticos(matriz)+susceptibilidad(celda.edad,celda.heridasAbiertas))*0.60+0.05;
 }
 
 int main(int argc, char *argv[]) {
     //Lee la dimension
     int n = atoi(argv[1]);
     celda celda;
-    celda* matrizInicial = malloc((n+2)*(n+2)*sizeof(celda));
 
-    inicializar(n, matrizInicial);
+    inicializar(n);
 
 
     //Reglas
