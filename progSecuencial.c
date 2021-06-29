@@ -69,7 +69,7 @@ void inicializarMatriz(int n){
         matriz[n+2][j].heridasAbiertas=-1;
         matriz[n+2][j].tiempo=-1;
     }
-    //establece seed aleatorio.
+    //establece la secuencia con un seed aleatorio.
     srand(time(NULL));
     //Genero la matriz valida
     for (int i = 1; i < n; i++){
