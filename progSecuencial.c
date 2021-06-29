@@ -146,7 +146,7 @@ void copiarMatriz(int n){
         for(int j=0; j<n+2; j++){
             matrizAvanzada[i][j].estado=matriz[i][j].estado;
             matrizAvanzada[i][j].edad=matriz[i][j].edad;
-            matrizAvanzada[i][j].edadTiempo=matriz[i][j].edadTiempo; //Refleja el avance del tiempo
+            matrizAvanzada[i][j].edadTiempo=matriz[i][j].edadTiempo+1; //Refleja el avance del tiempo
             matrizAvanzada[i][j].heridasAbiertas=matriz[i][j].heridasAbiertas;
             matrizAvanzada[i][j].tiempo=matriz[i][j].tiempo+1; //Refleja el avance del tiempo
 
@@ -154,6 +154,18 @@ void copiarMatriz(int n){
             else if (matrizAvanzada[i][j].edadTiempo<=35 && matrizAvanzada[i][j].edad!=ADULTO)matrizAvanzada[i][j].edad=ADULTO;
             else if (matrizAvanzada[i][j].edadTiempo>=36 && matrizAvanzada[i][j].edad!=VIEJO) matrizAvanzada[i][j].edad=VIEJO;
 
+        }
+    }
+}
+
+void generarMatrizResultado(int n){
+    for(int i=0; i<n+2; i++){
+        for(int j=0; j<n+2; j++){
+            matriz[i][j].estado = matrizAvanzada[i][j].estado;
+            matriz[i][j].edad = matrizAvanzada[i][j].edad;
+            matriz[i][j].edadTiempo = matrizAvanzada[i][j].edadTiempo;
+            matriz[i][j].heridasAbiertas = matrizAvanzada[i][j].heridasAbiertas;
+            matriz[i][j].tiempo = matrizAvanzada[i][j].tiempo;
         }
     }
 }
@@ -198,7 +210,7 @@ int main(int argc, char *argv[]) {
 
     //Variables
     float numRandom;
-    celda celda;
+    celda celdaActual, celdaNueva;
 
     //Lee la dimension
     int n = atoi(argv[1]);
@@ -209,50 +221,61 @@ int main(int argc, char *argv[]) {
     //Inicializar matriz tiempo t+1
     copiarMatriz(n);
 
+    for(int i=1;i<n;i++){
+        for(int j=1;j<n;j++){
+            celdaActual=matriz[i][j];
+            celdaNueva=celdaActual;
 
-    //Reglas
-    // Arbol sano -> Enfermo sin sintomas
-    numRandom=(rand() % 100 + 1)/100;
-    if(numRandom<=probabilidadContagio()){
-        celda.estado=NARANJA;
-        celda.tiempo=0;
+            //Reglas
+            // Arbol sano -> Enfermo sin sintomas
+            numRandom=(rand() % 100 + 1)/100;
+            if(numRandom<=probabilidadContagio()){
+                celdaNueva.estado=NARANJA;
+                celdaNueva.tiempo=0;
+            }
+
+            //Infectado con esporas -> Enfermo con sintomas
+            if(celdaActual.estado==NARANJA && celdaActual.tiempo==6){
+                celdaNueva.estado=ROJO;
+                celdaNueva.tiempo=0;
+            }
+
+            //Enfermo con sintomas -> Enfermo con tratamiento antifungico
+            numRandom=(rand() % 100 + 1)/100;
+            if(numRandom<=0.9){
+                celdaNueva.estado=AZUL;
+                celdaNueva.tiempo=0;
+            }
+
+            //Enfermo con tratamiento antifungico -> Recuperado/Podado/Reemplazado
+            numRandom=(rand() % 100 + 1)/100;
+            if(celdaActual.estado==AZUL && celdaActual.edad==JOVEN && numRandom<=0.01){
+                celdaNueva.estado=BLANCO;
+                celdaNueva.tiempo=0;
+            }
+            if(celdaActual.estado==AZUL && celdaActual.edad==ADULTO && numRandom<=0.10){
+                celdaNueva.estado=BLANCO;
+                celdaNueva.tiempo=0;
+            }
+            if(celdaActual.estado==AZUL && celdaActual.edad==VIEJO && numRandom<=0.45){
+                celdaNueva.edad=JOVEN;
+                celdaNueva.edadTiempo=1;
+                celdaNueva.estado=VERDE;
+                celdaNueva.tiempo=0;
+            }
+
+            //Arbol podado -> Arbol sano
+            if(celdaActual.estado==BLANCO && celdaActual.tiempo==7){
+                celdaNueva.estado=VERDE;
+                celdaNueva.tiempo=0;
+            }
+
+            matrizAvanzada[i][j]=celdaNueva;
+        }
     }
 
-    //Infectado con esporas -> Enfermo con sintomas
-    if(celda.estado==NARANJA && celda.tiempo==6){
-        celda.estado=ROJO;
-        celda.tiempo=0;
-    }
-
-    //Enfermo con sintomas -> Enfermo con tratamiento antifungico
-    numRandom=(rand() % 100 + 1)/100;
-    if(numRandom<=0.9){
-        celda.estado=AZUL;
-        celda.tiempo=0;
-    }
-
-    //Enfermo con tratamiento antifungico -> Recuperado/Podado/Reemplazado
-    numRandom=(rand() % 100 + 1)/100;
-    if(celda.estado==AZUL && celda.edad==JOVEN && numRandom<=0.01){
-        celda.estado=BLANCO;
-        celda.tiempo=0;
-    }
-    if(celda.estado==AZUL && celda.edad==ADULTO && numRandom<=0.10){
-        celda.estado=BLANCO;
-        celda.tiempo=0;
-    }
-    if(celda.estado==AZUL && celda.edad==VIEJO && numRandom<=0.45){
-        celda.edad=JOVEN;
-        celda.edadTiempo=1;
-        celda.estado=VERDE;
-        celda.tiempo=0;
-    }
+    generarMatrizResultado(n);
     
-    //Arbol podado -> Arbol sano
-    if(celda.estado==BLANCO && celda.tiempo==7){
-        celda.estado=VERDE;
-        celda.tiempo=0;
-    }
 
 
 }
