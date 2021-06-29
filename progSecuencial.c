@@ -48,6 +48,7 @@ typedef struct celda{
 //Matriz 
 celda matriz[MAXSIZE][MAXSIZE];
 celda matrizAvanzada[MAXSIZE][MAXSIZE];
+celda vecinos[8];
 
 //Input n: cantidad de celdas que contiene la matriz 
 //n={200,800,1500}
@@ -157,6 +158,17 @@ void copiarMatriz(int n){
     }
 }
 
+void obtenerVecinos(int i, int j){
+    vecinos[0]=matriz[i-1][j-1];
+    vecinos[1]=matriz[i-1][j];
+    vecinos[2]=matriz[i-1][j+1];
+    vecinos[3]=matriz[i][j-1];
+    vecinos[4]=matriz[i][j+1];
+    vecinos[5]=matriz[i+1][j-1];
+    vecinos[6]=matriz[i+1][j];
+    vecinos[7]=matriz[i+1][j+1];
+}
+
 float susceptibilidad(int edad, int heridasAbiertas){
     float valor = 0.0;
     if (heridasAbiertas) valor=valor+0.15;
@@ -168,11 +180,17 @@ float susceptibilidad(int edad, int heridasAbiertas){
 }
 
 float porcentajeVecinosSintomaticos(){
-    
+    int vecinosSintomaticos=0; //Cantidad de celdas en estado rojo
+    obtenerVecinos(i,j);
+    for(int i=0;i<8;i++){
+        if(vecinos[i].estado==ROJO) vecinosSintomaticos++;
+    }
+    return (vecinosSintomaticos/8)*100; // ¿ESTA BIEN EL CALCULO?
 }
 
-float probabilidadContagio(celda celda){
-    return (porcentajeVecinosSintomaticos()+susceptibilidad(celda.edad,celda.heridasAbiertas))*0.60+0.05;
+float probabilidadContagio(int i,int j){
+    celda celda=matriz[i][j];
+    return (porcentajeVecinosSintomaticos(i,j)+susceptibilidad(celda.edad,celda.heridasAbiertas))*0.60+0.05;
 }
 
 int main(int argc, char *argv[]) {
