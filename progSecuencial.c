@@ -313,8 +313,10 @@ int main(int argc, char *argv[])
             for (int j = 1; j < n + 1; j++)
             {
 
-                celdaActual = matriz[i][j];
+                celdaActual = matrizAvanzada[i][j]; //i,j es el actual, la rec es consistente.. no hay cambio
                 celdaNueva = celdaActual;
+                //celdaNueva.edadTiempo=celdaNueva.edadTiempo+1;
+                //celdaNueva.tiempo=celdaNueva.tiempo+1;
                 
                 obtenerVecinos(i, j);
                 numRandom = (rand() % 100 + 1) / 100;
