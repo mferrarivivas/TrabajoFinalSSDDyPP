@@ -313,16 +313,14 @@ int main(int argc, char *argv[])
             for (int j = 1; j < n + 1; j++)
             {
 
-                celdaActual = matrizAvanzada[i][j]; //i,j es el actual, la rec es consistente.. no hay cambio
+                celdaActual = matrizAvanzada[i][j]; 
                 celdaNueva = celdaActual;
-                //celdaNueva.edadTiempo=celdaNueva.edadTiempo+1;
-                //celdaNueva.tiempo=celdaNueva.tiempo+1;
                 
                 obtenerVecinos(i, j);
                 numRandom = (rand() % 100 + 1) / 100;
                 //Reglas
                 if (celdaActual.estado == VERDE && algunVecinoRojo())
-                { // Arbol sano -> Enfermo sin sintomas
+                {   // Arbol sano -> Enfermo sin sintomas
                     if (numRandom <= probabilidadContagio(i, j))
                     {
                         celdaNueva.estado = NARANJA;
@@ -330,29 +328,29 @@ int main(int argc, char *argv[])
                     }
                 }
                 else if (celdaActual.estado == NARANJA && celdaActual.tiempo == 6)
-                { //Infectado con esporas -> Enfermo con sintomas
+                {   //Infectado con esporas -> Enfermo con sintomas
                     celdaNueva.estado = ROJO;
                     celdaNueva.tiempo = 0;
                 }
                 else if (celdaActual.estado == ROJO && numRandom <= 0.9)
-                { //Enfermo con sintomas -> Enfermo con tratamiento antifungico
+                {   //Enfermo con sintomas -> Enfermo con tratamiento antifungico
                     celdaNueva.estado = AZUL;
                     celdaNueva.tiempo = 0;
                 }
                 else if (celdaActual.estado == AZUL && celdaActual.tiempo == 8)
-                { //Enfermo con tratamiento antifungico -> Recuperado/Podado/Reemplazado
+                {   //Enfermo con tratamiento antifungico -> Recuperado/Podado/Reemplazado
                     if (celdaActual.edad == JOVEN && numRandom <= 0.01)
-                    { //podado
+                    { //Podado
                         celdaNueva.estado = BLANCO;
                         celdaNueva.tiempo = 0;
                     }
                     else if (celdaActual.edad == ADULTO && numRandom <= 0.12)
-                    { //podado
+                    { //Podado
                         celdaNueva.estado = BLANCO;
                         celdaNueva.tiempo = 0;
                     }
                     else if (celdaActual.edad == VIEJO && numRandom <= 0.57)
-                    { //reemplazo de nuevo arbol
+                    { //Reemplazo
                         celdaNueva.edad = JOVEN;
                         celdaNueva.edadTiempo = 52;
                         celdaNueva.estado = VERDE;
@@ -360,7 +358,7 @@ int main(int argc, char *argv[])
                     }
                 }
                 else if (celdaActual.estado == BLANCO && celdaActual.tiempo == 7)
-                { //Arbol podado -> Arbol sano
+                {   //Arbol podado -> Arbol sano
                     celdaNueva.estado = VERDE;
                     celdaNueva.tiempo = 0;
                 }
