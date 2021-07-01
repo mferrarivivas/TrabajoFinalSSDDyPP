@@ -255,6 +255,7 @@ int algunVecinoRojo()
         if (vecinos[i].estado == ROJO)
             return 1;
     }
+    return 0;
 }
 
 //1 tiempo es 1 semana
