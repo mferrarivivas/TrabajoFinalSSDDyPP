@@ -78,7 +78,6 @@ void inicializarMatriz(int n)
         matriz[0][j].edadTiempo = -1;
         matriz[0][j].heridasAbiertas = -1;
         matriz[0][j].tiempo = -1;
-
         matriz[n + 1][j].estado = -1;
         matriz[n + 1][j].edad = -1;
         matriz[n + 1][j].edadTiempo = -1;
