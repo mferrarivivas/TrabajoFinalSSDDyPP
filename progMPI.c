@@ -1,8 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
+#include <stdio.h>
 #include <mpi.h>
 
 #define MAXSIZE 1502 // Maximo tamaño de la Matriz
@@ -45,11 +44,6 @@ typedef struct celda
     int heridasAbiertas; //Si, No
     int tiempo;          //Tiempo transcurrido desde la ultima actualizacion de estado
 } celda;
-
-//Matriz
-//celda matriz[MAXSIZE][MAXSIZE];
-//celda matrizAvanzada[MAXSIZE][MAXSIZE];
-celda vecinos[8];
 
 //Input rows: cantidad de filas
 //cols: cantidad de columnas.
@@ -166,47 +160,45 @@ void inicializarMatriz(int rows,int cols,celda *matriz)
         }
     }
 }
-//Matriz de consulta.
-void copiarMatriz(int n)
-{
-    for (int i = 0; i < n + 2; i++)
-    {
-        for (int j = 0; j < n + 2; j++)
-        {
-            matrizAvanzada[i][j].estado = matriz[i][j].estado;
-            matrizAvanzada[i][j].edad = matriz[i][j].edad;
-            matrizAvanzada[i][j].edadTiempo = matriz[i][j].edadTiempo + 1; //Refleja el avance del tiempo
-            matrizAvanzada[i][j].heridasAbiertas = matriz[i][j].heridasAbiertas;
-            matrizAvanzada[i][j].tiempo = matriz[i][j].tiempo + 1; //Refleja el avance del tiempo
 
-            //1 año son 52 semanas, 3 años son 156 semanas, 35 años son 94640 semanas
-            if (matrizAvanzada[i][j].edadTiempo <= 156 && matrizAvanzada[i][j].edad != JOVEN)
-                matrizAvanzada[i][j].edad = JOVEN;
-            else if (matrizAvanzada[i][j].edadTiempo <= 94640 && matrizAvanzada[i][j].edad != ADULTO)
-                matrizAvanzada[i][j].edad = ADULTO;
-            else if (matrizAvanzada[i][j].edadTiempo >= 94641 && matrizAvanzada[i][j].edad != VIEJO)
-                matrizAvanzada[i][j].edad = VIEJO;
-        }
+void inicializarMatrizMatrizAvanzada(int rows,int cols,celda *matriz){
+    for (int i = 0; i < rows + 2; i++)
+    {
+        matriz[(cols+2)*i].estado = -1;
+        matriz[(cols+2)*i].edad = -1;
+        matriz[(cols+2)*i].edadTiempo = -1;
+        matriz[(cols+2)*i].heridasAbiertas = -1;
+        matriz[(cols+2)*i].tiempo = -1;
+
+        matriz[(cols+2)*i+cols+1].estado = -1;
+        matriz[(cols+2)*i+cols+1].edad = -1;
+        matriz[(cols+2)*i+cols+1].edadTiempo = -1;
+        matriz[(cols+2)*i+cols+1].heridasAbiertas = -1;
+        matriz[(cols+2)*i+cols+1].tiempo = -1;
     }
+
+    //Primera y Ultima fila invalida
+    for (int j = 1; j < cols + 1; j++)
+    {
+        //fila 0
+        matriz[j].estado = -1;
+        matriz[j].edad = -1;
+        matriz[j].edadTiempo = -1;
+        matriz[j].heridasAbiertas = -1;
+        matriz[j].tiempo = -1;
+
+        //fila rows+1
+        matriz[(cols+2)*(rows+1)+j].estado = -1;
+        matriz[(cols+2)*(rows+1)+j].edad = -1;
+        matriz[(cols+2)*(rows+1)+j].edadTiempo = -1;
+        matriz[(cols+2)*(rows+1)+j].heridasAbiertas = -1;
+        matriz[(cols+2)*(rows+1)+j].tiempo = -1;
+    }
+
+
 }
 
-//Actualizar punteros!
-void generarMatrizResultado(int n)
-{
-    for (int i = 1; i < n + 1; i++)
-    {
-        for (int j = 1; j < n + 1; j++)
-        {
-            matriz[i][j].estado = matrizAvanzada[i][j].estado;
-            matriz[i][j].edad = matrizAvanzada[i][j].edad;
-            matriz[i][j].edadTiempo = matrizAvanzada[i][j].edadTiempo;
-            matriz[i][j].heridasAbiertas = matrizAvanzada[i][j].heridasAbiertas;
-            matriz[i][j].tiempo = matrizAvanzada[i][j].tiempo;
-        }
-    }
-}
-
-void obtenerVecinos(int cols,int i, int j,celda *matriz)
+void obtenerVecinos(int cols,int i, int j,celda vecinos[],celda *matriz)
 {
     vecinos[0] = matriz[(cols+2)*(i-1)+(j-1)];
     vecinos[1] = matriz[(cols+2)*i + (j-1)];
@@ -235,25 +227,24 @@ float susceptibilidad(int edad, int heridasAbiertas)
     return valor;
 }
 
-//obtener vecinos antes
-float porcentajeVecinosSintomaticos(int i, int j)
+float porcentajeVecinosSintomaticos(celda vecinos[])
 {
     int vecinosSintomaticos = 0; //Cantidad de celdas en estado rojo
     for (int i = 0; i < 8; i++)
     {
+
         if (vecinos[i].estado == ROJO)
             vecinosSintomaticos++;
     }
     return (vecinosSintomaticos / 8);
 }
 
-float probabilidadContagio(int cols,int i, int j,celda *matriz)
+float probabilidadContagio(celda celdaActual,celda vecinos[])
 {
-    celda celda = matriz[(cols+2)*i+j];
-    return (porcentajeVecinosSintomaticos(i, j) + susceptibilidad(celda.edad, celda.heridasAbiertas)) * 0.60 + 0.05;
+    return (porcentajeVecinosSintomaticos(vecinos) + susceptibilidad(celdaActual.edad, celdaActual.heridasAbiertas)) * 0.65;
 }
 
-int algunVecinoRojo()
+int algunVecinoRojo(celda vecinos[])
 {
     for (int i = 0; i < 8; i++)
     {
@@ -264,30 +255,48 @@ int algunVecinoRojo()
 }
 
 
-void copiarFila(int cols, int rows, celda fila[], celda *matriz, int flag){
+/**
+ * 0 copia en fila el borde superior
+ * 1 copia en fila el borde inferior
+ * 2 copia en row+1 el contenido de fila
+ * 3 copia en 0 el contenido de fila
+ * */
+
+void copiarFila(int cols, int rows, celda fila[], celda *matriz, int op){
     int j=0;
-    switch(flag){
-        case 0: // fila inferior
-            for(j=0; j<(cols+2); j++){
+    switch(op){
+        case 0: // borde inferior i=rows.
+            for(j=1; j<cols+1; j++){
                 fila[j] = matriz[(cols+2)*rows+j];
             }
             break;
-        case 1: // fila superior
-            for(j=0; j<(cols+2); j++){
-                fila[j] = matriz[(cols+2)*(rows-1)+j];
+        case 1: // borde superior i=1
+            for(j=1; j<cols+1; j++){
+                fila[j] = matriz[(cols+2)+j];
             }
             break;
-        case 2: // fila inferior recibida a la matriz
-            for(j=0; j<(cols+2); j++){
+        case 2: // ultima fila de la matriz  i=rows+1
+            for(j=1; j<cols+1; j++){
                 matriz[(cols+2)*(rows+1)+j] = fila[j];
             }
             break;
-        case 3: // fila superior recibida a la matriz
-            for(j=0; j<(cols+2); j++){
-                matriz[(cols+2)*0+j] = fila[j];
+        case 3: // primera fila de la matriz i=0
+            for(j=1; j<cols+1; j++){
+                matriz[j] = fila[j];
             }
             break;
     }
+}
+
+void imprimirMatriz(int cols,int rows, celda matriz[]){
+     for (int i = 0; i < rows + 2; i++)
+        {
+            for (int j = 0; j < cols + 2; j++)
+            {
+                printf("%d  ", matriz[(cols+2)*i+j].estado);
+            }
+            printf("\n");
+        }
 }
 
 //1 tiempo es 1 semana
@@ -316,12 +325,16 @@ int main(int argc, char *argv[])
     
     //Comienzo de la computacion paralela
     MPI_Barrier(MPI_COMM_WORLD);
-    start=MPI_Wtime();
 
+    if(id_proc==0){
+        start=MPI_Wtime();
+    }
     int rows=n/process;
 
     celda* matriz = malloc((n+2)*(rows+2)*sizeof(celda));
     celda* matrizAvanzada = malloc((n+2)*(rows+2)*sizeof(celda));
+
+    celda *aux;
 
     //Filas para la comunicacion
     celda rowSend[n+2];
@@ -331,41 +344,109 @@ int main(int argc, char *argv[])
     srand(time(NULL)+id_proc);
 
     inicializarMatriz(rows,n,matriz);
+    inicializarMatrizMatrizAvanzada(rows,n,matrizAvanzada);
     
+    //vecinos de cada celda
+    celda vecinos[8];
 
     //Variables
     float numRandom;
     celda celdaActual, celdaNueva;
 
-    if(id_proc==0){
-
-    }else if(id_proc==(process-1)){
-
-    }else{
-
-    }
-
+    int next,prev;
 
 
     for (int semana = 0; semana < semanas; semana++){
 
-        //Inicializar matriz tiempo t+1
-        //copiarMatriz(n);
 
-        for (int i = 1; i < n + 1; i++)
+        if(id_proc==0){ //envia su ultima fila y recibe la primer fila de la siguientes matriz.
+
+            next=id_proc+1;
+
+            copiarFila(n,rows,rowSend,matriz,0);
+            MPI_Send(rowSend, (n+2)*sizeof(celda), MPI_BYTE, next, 0, MPI_COMM_WORLD);
+
+            MPI_Recv(rowRecv, (n+2)*sizeof(celda), MPI_BYTE, next, MPI_ANY_TAG,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+            copiarFila(n,rows,rowRecv,matriz,2);
+
+
+            
+        }else if(id_proc==(process-1)){ //envia su fila 1 y recibe la fila 0
+            
+            prev=id_proc-1;
+
+            copiarFila(n,rows,rowSend,matriz,1);
+            MPI_Send(rowSend, (n+2)*sizeof(celda), MPI_BYTE, prev, 0, MPI_COMM_WORLD);
+
+            MPI_Recv(rowRecv, (n+2)*sizeof(celda), MPI_BYTE, prev, MPI_ANY_TAG,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+            copiarFila(n,rows,rowRecv,matriz,3);
+
+
+        
+        }else{ 
+
+            prev=id_proc-1;
+            next=id_proc+1;
+
+
+            // Recibe fila superior del proceso anterior 
+            MPI_Recv(rowRecv, (n+2)*sizeof(celda), MPI_BYTE, prev, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            copiarFila(n,rows, rowRecv, matriz, 3);
+
+            //Envía su fila inferior al proceso siguiente
+            copiarFila(n,rows, rowSend, matriz, 1);
+            MPI_Send(rowSend, (n+2)*sizeof(celda), MPI_BYTE, next, 0, MPI_COMM_WORLD);
+
+
+            // Recibe fila superior del proceso siguiente
+            MPI_Recv(rowRecv, (n+2)*sizeof(celda), MPI_BYTE, next, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            copiarFila(n, rows, rowRecv, matriz, 2);
+
+
+            // Envía su fila superior al proceso anterior
+            copiarFila(n,rows, rowSend, matriz, 0);
+            MPI_Send(rowSend, (n+2)*sizeof(celda), MPI_BYTE, prev, 0, MPI_COMM_WORLD);
+
+
+        }   
+
+        printf("%d INICIO DE SEMANA %d \n",id_proc,semana);
+
+        imprimirMatriz(n,rows,matriz);
+
+    
+        for (int i = 1; i < rows + 1; i++)
         {
             for (int j = 1; j < n + 1; j++)
             {
 
-                celdaActual = matrizAvanzada[i][j]; 
+                int index=(n+2)*i+j;
+
+                celdaActual = matriz[index];
+
                 celdaNueva = celdaActual;
+
+                //actualizacion 
+                celdaNueva.edadTiempo += 1; //Refleja el avance del tiempo
+                celdaNueva.tiempo += 1; //Refleja el avance del tiempo
+
+                //1 año son 52 semanas, 3 años son 156 semanas, 35 años son 94640 semanas
+                if (celdaNueva.edadTiempo <= 156 && celdaNueva.edad != JOVEN)
+                    celdaNueva.edad = JOVEN;
+                else if (celdaNueva.edadTiempo <= 94640 && celdaNueva.edad != ADULTO)
+                    celdaNueva.edad = ADULTO;
+                else if (celdaNueva.edadTiempo >= 94641 && celdaNueva.edad != VIEJO)
+                    celdaNueva.edad = VIEJO;
+
+                //fin actualizacion
                 
-                obtenerVecinos(i, j);
+                obtenerVecinos(n,i, j,vecinos,matriz);
+
                 numRandom = (rand() % 100 + 1) / 100;
                 //Reglas
-                if (celdaActual.estado == VERDE && algunVecinoRojo())
+                if (celdaActual.estado == VERDE && algunVecinoRojo(vecinos))
                 {   // Arbol sano -> Enfermo sin sintomas
-                    if (numRandom <= probabilidadContagio(i, j))
+                    if (numRandom <= probabilidadContagio(celdaActual,vecinos))
                     {
                         celdaNueva.estado = NARANJA;
                         celdaNueva.tiempo = 0;
@@ -407,27 +488,32 @@ int main(int argc, char *argv[])
                     celdaNueva.tiempo = 0;
                 }
 
-                matrizAvanzada[i][j] = celdaNueva;
+                matrizAvanzada[index] = celdaNueva;
             }
         }
 
-        generarMatrizResultado(n);
+        aux=matriz;
+        matriz=matrizAvanzada;
+        matrizAvanzada=aux;
         
-        printf("FIN DE SEMANA %d\n",semana);
-
-        for (int i = 0; i < n + 2; i++)
-        {
-            for (int j = 0; j < n + 2; j++)
-            {
-                int estado = matriz[i][j].estado;
-                printf("%d  ", estado);
-                if (estado == AZUL)
-                    contadorAzul++;
-                if (estado == VERDE)
-                    contadorVerde++;
-            }
-            printf("\n");
-        }
+        printf("%d FIN DE SEMANA %d\n",id_proc,semana);
+        imprimirMatriz(n,rows,matriz);
         printf("\n \n \n");
     }
+
+    free(matriz);
+    free(matrizAvanzada);
+
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    if(id_proc==0){
+        end=MPI_Wtime();
+        tiempo=end-start;
+        printf(">>>>>FIN>>>> Tiempo en Paralelo: %f\n",tiempo);
+    }
+
+
+    MPI_Finalize();
+
+
 }
