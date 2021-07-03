@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
     for (int semana = 0; semana < semanas; semana++){
 
         //Inicializar matriz tiempo t+1
-        copiarMatriz(n);
+        //copiarMatriz(n);
 
         int contadorAzul = 0;
         int contadorVerde = 0;
@@ -313,8 +313,19 @@ int main(int argc, char *argv[])
             for (int j = 1; j < n + 1; j++)
             {
 
-                celdaActual = matrizAvanzada[i][j]; 
+                celdaActual = matriz[i][j]; 
                 celdaNueva = celdaActual;
+
+                celdaNueva.tiempo+=1;
+                celdaNueva.edadTiempo+=1;
+
+                if (celdaNueva.edadTiempo <= 156 && celdaNueva.edad != JOVEN)
+                 celdaNueva.edad = JOVEN;
+                else if (celdaNueva.edadTiempo <= 94640 && celdaNueva.edad != ADULTO)
+                    celdaNueva.edad = ADULTO;
+                else if (celdaNueva.edadTiempo >= 94641 && celdaNueva.edad != VIEJO)
+                    celdaNueva.edad = VIEJO;
+        
                 
                 obtenerVecinos(i, j);
                 numRandom = (rand() % 100 + 1) / 100;
