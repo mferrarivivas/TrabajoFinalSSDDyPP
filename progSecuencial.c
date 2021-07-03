@@ -44,19 +44,26 @@ typedef struct celda
     int tiempo;          //Tiempo transcurrido desde la ultima actualizacion de estado
 } celda;
 
-//Matriz
-celda matriz[MAXSIZE][MAXSIZE];
-celda matrizAvanzada[MAXSIZE][MAXSIZE];
-celda vecinos[8];
-
 //Input n: cantidad de celdas que contiene la matriz
 //n={200,800,1500}
-void inicializarMatriz(int n)
+void inicializarMatriz(celda *ptr,int n)
 {
     int rndom;
     //Primera y Ultima columna invalida
     for (int i = 0; i < n + 2; i++)
     {
+        ptr[(n+2)*i+0].estado = -1;
+        ptr[(n+2)*i+0].edad = -1;
+        ptr[(n+2)*i+0].edadTiempo = -1;
+        ptr[(n+2)*i+0].heridasAbiertas = -1;
+        ptr[(n+2)*i+0].tiempo = -1;
+
+        ptr[(n+2)*i+(n+1)].estado = -1;
+        ptr[(n+2)*i+(n+1)].edad = -1;
+        ptr[(n+2)*i+(n+1)].edadTiempo = -1;
+        ptr[(n+2)*i+(n+1)].heridasAbiertas = -1;
+        ptr[(n+2)*i+(n+1)].tiempo = -1;
+        /*
         matriz[i][0].estado = -1;
         matriz[i][0].edad = -1;
         matriz[i][0].edadTiempo = -1;
@@ -68,21 +75,36 @@ void inicializarMatriz(int n)
         matriz[i][n + 1].edadTiempo = -1;
         matriz[i][n + 1].heridasAbiertas = -1;
         matriz[i][n + 1].tiempo = -1;
+        */
     }
 
     //Primera y Ultima fila invalida
     for (int j = 1; j < n + 1; j++)
     {
+        ptr[(n+2)*0+j].estado = -1;
+        ptr[(n+2)*0+j].edad = -1;
+        ptr[(n+2)*0+j].edadTiempo = -1;
+        ptr[(n+2)*0+j].heridasAbiertas = -1;
+        ptr[(n+2)*0+j].tiempo = -1;
+
+        ptr[(n+2)*(n+1)+j].estado = -1;
+        ptr[(n+2)*(n+1)+j].edad = -1;
+        ptr[(n+2)*(n+1)+j].edadTiempo = -1;
+        ptr[(n+2)*(n+1)+j].heridasAbiertas = -1;
+        ptr[(n+2)*(n+1)+j].tiempo = -1;
+        /*
         matriz[0][j].estado = -1;
         matriz[0][j].edad = -1;
         matriz[0][j].edadTiempo = -1;
         matriz[0][j].heridasAbiertas = -1;
         matriz[0][j].tiempo = -1;
+
         matriz[n + 1][j].estado = -1;
         matriz[n + 1][j].edad = -1;
         matriz[n + 1][j].edadTiempo = -1;
         matriz[n + 1][j].heridasAbiertas = -1;
         matriz[n + 1][j].tiempo = -1;
+        */
     }
 
     //Establece la secuencia con un seed aleatorio.
@@ -97,7 +119,7 @@ void inicializarMatriz(int n)
             //Sanos
             if (rndom < DENSIDAD)
             {
-                matriz[i][j].estado = VERDE;
+                ptr[(n+2)*i+j].estado = VERDE;
             }
             //No sanos
             else
@@ -105,65 +127,105 @@ void inicializarMatriz(int n)
                 rndom = rand() % 1001;
                 if (rndom <= CON_SINTOMAS)
                 {
-                    matriz[i][j].estado = ROJO;
+                    ptr[(n+2)*i+j].estado = ROJO;
                 }
                 else if (rndom <= SIN_SINTOMAS)
                 {
-                    matriz[i][j].estado = NARANJA;
+                    ptr[(n+2)*i+j].estado = NARANJA;
                 }
                 else
                 {
-                    matriz[i][j].estado = AZUL;
+                    ptr[(n+2)*i+j].estado = AZUL;
                 }
             }
             //Edad
             rndom = rand() % 101;
             if (rndom <= JOVENES)
             {
-                matriz[i][j].edad = JOVEN;
-                matriz[i][j].edadTiempo = 0;
+                ptr[(n+2)*i+j].edad = JOVEN;
+                ptr[(n+2)*i+j].edadTiempo = 0;
             }
             else if (rndom <= ADULTOS)
             {
-                matriz[i][j].edad = ADULTO;
-                matriz[i][j].edadTiempo = 208;
+                ptr[(n+2)*i+j].edad = ADULTO;
+                ptr[(n+2)*i+j].edadTiempo = 208;
             }
             else
             {
-                matriz[i][j].edad = VIEJO;
-                matriz[i][j].edadTiempo = 94692;
+                ptr[(n+2)*i+j].edad = VIEJO;
+                ptr[(n+2)*i+j].edadTiempo = 94692;
             }
             //Heridas
             rndom = rand() % 101;
 
-            if (matriz[i][j].edad == ADULTO && rndom <= HERIDA_ADULTO)
+            if (ptr[(n+2)*i+j].edad == ADULTO && rndom <= HERIDA_ADULTO)
             {
-                matriz[i][j].heridasAbiertas = SI;
+                ptr[(n+2)*i+j].heridasAbiertas = SI;
             }
             else
-                matriz[i][j].heridasAbiertas = NO;
+                ptr[(n+2)*i+j].heridasAbiertas = NO;
 
-            if (matriz[i][j].edad == JOVEN && rndom <= HERIDA_JOVEN)
+            if (ptr[(n+2)*i+j].edad == JOVEN && rndom <= HERIDA_JOVEN)
             {
-                matriz[i][j].heridasAbiertas = SI;
+                ptr[(n+2)*i+j].heridasAbiertas = SI;
             }
             else
-                matriz[i][j].heridasAbiertas = NO;
+                ptr[(n+2)*i+j].heridasAbiertas = NO;
 
-            if (matriz[i][j].edad == VIEJO && rndom <= HERIDA_VIEJO)
+            if (ptr[(n+2)*i+j].edad == VIEJO && rndom <= HERIDA_VIEJO)
             {
-                matriz[i][j].heridasAbiertas = SI;
+                ptr[(n+2)*i+j].heridasAbiertas = SI;
             }
             else
-                matriz[i][j].heridasAbiertas = NO;
+                ptr[(n+2)*i+j].heridasAbiertas = NO;
             //Tiempo
-            matriz[i][j].tiempo = 0;
+            ptr[(n+2)*i+j].tiempo = 0;
         }
     }
 }
-//Matriz de consulta.
+
+void inicializarMatrizMatrizAvanzada(celda *matriz,int n){
+    int rows=n;int cols=n;
+    for (int i = 0; i < rows + 2; i++)
+    {
+        matriz[(cols+2)*i].estado = -1;
+        matriz[(cols+2)*i].edad = -1;
+        matriz[(cols+2)*i].edadTiempo = -1;
+        matriz[(cols+2)*i].heridasAbiertas = -1;
+        matriz[(cols+2)*i].tiempo = -1;
+
+        matriz[(cols+2)*i+cols+1].estado = -1;
+        matriz[(cols+2)*i+cols+1].edad = -1;
+        matriz[(cols+2)*i+cols+1].edadTiempo = -1;
+        matriz[(cols+2)*i+cols+1].heridasAbiertas = -1;
+        matriz[(cols+2)*i+cols+1].tiempo = -1;
+    }
+
+    //Primera y Ultima fila invalida
+    for (int j = 1; j < cols + 1; j++)
+    {
+        //fila 0
+        matriz[j].estado = -1;
+        matriz[j].edad = -1;
+        matriz[j].edadTiempo = -1;
+        matriz[j].heridasAbiertas = -1;
+        matriz[j].tiempo = -1;
+
+        //fila rows+1
+        matriz[(cols+2)*(rows+1)+j].estado = -1;
+        matriz[(cols+2)*(rows+1)+j].edad = -1;
+        matriz[(cols+2)*(rows+1)+j].edadTiempo = -1;
+        matriz[(cols+2)*(rows+1)+j].heridasAbiertas = -1;
+        matriz[(cols+2)*(rows+1)+j].tiempo = -1;
+    }
+
+
+}
+
+//Copio la matriz de consulta en la matriz avanzada
+/*
 void copiarMatriz(int n)
-{
+{   
     for (int i = 0; i < n + 2; i++)
     {
         for (int j = 0; j < n + 2; j++)
@@ -184,9 +246,11 @@ void copiarMatriz(int n)
         }
     }
 }
+*/
 
+/*
 void generarMatrizResultado(int n)
-{
+{   
     for (int i = 1; i < n + 1; i++)
     {
         for (int j = 1; j < n + 1; j++)
@@ -199,9 +263,19 @@ void generarMatrizResultado(int n)
         }
     }
 }
+*/
 
-void obtenerVecinos(int i, int j)
+void obtenerVecinos(int n,int i, int j,celda vecinos[],celda *ptr)
 {
+    vecinos[0] = ptr[(n+2)*(i-1)+(j-1)];//matriz[i - 1][j - 1];
+    vecinos[1] = ptr[(n+2)*(i-1)+(j)];//matriz[i - 1][j];
+    vecinos[2] = ptr[(n+2)*(i-1)+(j+1)];///matriz[i - 1][j + 1];
+    vecinos[3] = ptr[(n+2)*(i)+(j-1)];///matriz[i][j - 1];
+    vecinos[4] = ptr[(n+2)*(i)+(j+1)];///matriz[i][j + 1];
+    vecinos[5] = ptr[(n+2)*(i+1)+(j-1)];///matriz[i + 1][j - 1];
+    vecinos[6] = ptr[(n+2)*(i+1)+(j)];///matriz[i + 1][j];
+    vecinos[7] = ptr[(n+2)*(i+1)+(j+1)];///matriz[i + 1][j + 1];
+    /*
     vecinos[0] = matriz[i - 1][j - 1];
     vecinos[1] = matriz[i - 1][j];
     vecinos[2] = matriz[i - 1][j + 1];
@@ -210,6 +284,7 @@ void obtenerVecinos(int i, int j)
     vecinos[5] = matriz[i + 1][j - 1];
     vecinos[6] = matriz[i + 1][j];
     vecinos[7] = matriz[i + 1][j + 1];
+    */
 }
 
 float susceptibilidad(int edad, int heridasAbiertas)
@@ -229,10 +304,9 @@ float susceptibilidad(int edad, int heridasAbiertas)
     return valor;
 }
 
-float porcentajeVecinosSintomaticos(int i, int j)
+float porcentajeVecinosSintomaticos(celda vecinos[])
 {
     int vecinosSintomaticos = 0; //Cantidad de celdas en estado rojo
-    obtenerVecinos(i, j);
     for (int i = 0; i < 8; i++)
     {
         if (vecinos[i].estado == ROJO)
@@ -241,13 +315,12 @@ float porcentajeVecinosSintomaticos(int i, int j)
     return (vecinosSintomaticos / 8);
 }
 
-float probabilidadContagio(int i, int j)
+float probabilidadContagio(celda celdaActual,celda vecinos[])
 {
-    celda celda = matriz[i][j];
-    return (porcentajeVecinosSintomaticos(i, j) + susceptibilidad(celda.edad, celda.heridasAbiertas)) * 0.60 + 0.05;
+    return (porcentajeVecinosSintomaticos(vecinos) + susceptibilidad(celdaActual.edad, celdaActual.heridasAbiertas)) * 0.65;
 }
 
-int algunVecinoRojo()
+int algunVecinoRojo(celda vecinos[])
 {
     for (int i = 0; i < 8; i++)
     {
@@ -257,10 +330,10 @@ int algunVecinoRojo()
     return 0;
 }
 
+
 //1 tiempo es 1 semana
 int main(int argc, char *argv[])
 {
-
     srand(time(NULL));
 
     //Variables
@@ -276,63 +349,76 @@ int main(int argc, char *argv[])
     //Lee la dimension
     int n = atoi(argv[1]);
 
-    //Lee la cantidad de semana
+    //Lee la cantidad de semanas
     int semanas = atoi(argv[2]);
 
+    celda* matriz = malloc((n+2)*(n+2)*sizeof(celda));
+    celda* matrizAvanzada = malloc((n+2)*(n+2)*sizeof(celda));
+
+    celda *aux;
+
+    //vecinos de cada celda
+    celda vecinos[8];
+
     //Inicializar matriz tiempo t
-    inicializarMatriz(n);
+    inicializarMatriz(matriz,n);
+    inicializarMatrizMatrizAvanzada(matrizAvanzada,n);
 
     for (int semana = 0; semana < semanas; semana++){
+        //int contadorAzul = 0;
+        //int contadorVerde = 0;
 
-        //Inicializar matriz tiempo t+1
-        //copiarMatriz(n);
-
-        int contadorAzul = 0;
-        int contadorVerde = 0;
-
-        printf("INICIO DE SEMANA %d\n",semana);
+        printf("INICIO DE SEMANA %d:\n",semana);
 
         for (int i = 0; i < n + 2; i++)
         {
             for (int j = 0; j < n + 2; j++)
             {
-                int estado = matriz[i][j].estado;
+                int estado = matriz[(n+2)*i+j].estado;
                 printf("%d  ", estado);
-                if (estado == AZUL)
+                /**if (estado == AZUL)
                     contadorAzul++;
                 if (estado == VERDE)
-                    contadorVerde++;
+                    contadorVerde++;**/
             }
             printf("\n");
         }
 
-        printf("Azules: %d   Verdes: %d\n", contadorAzul, contadorVerde);
+        //printf("Azules: %d   Verdes: %d\n", contadorAzul, contadorVerde);
 
         for (int i = 1; i < n + 1; i++)
         {
             for (int j = 1; j < n + 1; j++)
             {
 
-                celdaActual = matriz[i][j]; 
+                int index=(n+2)*i+j;
+
+                celdaActual = matriz[index];
+
                 celdaNueva = celdaActual;
 
-                celdaNueva.tiempo+=1;
-                celdaNueva.edadTiempo+=1;
+                //actualizacion 
+                celdaNueva.edadTiempo += 1; //Refleja el avance del tiempo
+                celdaNueva.tiempo += 1; //Refleja el avance del tiempo
 
+                //1 año son 52 semanas, 3 años son 156 semanas, 35 años son 94640 semanas
                 if (celdaNueva.edadTiempo <= 156 && celdaNueva.edad != JOVEN)
-                 celdaNueva.edad = JOVEN;
+                    celdaNueva.edad = JOVEN;
                 else if (celdaNueva.edadTiempo <= 94640 && celdaNueva.edad != ADULTO)
                     celdaNueva.edad = ADULTO;
                 else if (celdaNueva.edadTiempo >= 94641 && celdaNueva.edad != VIEJO)
                     celdaNueva.edad = VIEJO;
-        
+
+                //fin actualizacion
                 
-                obtenerVecinos(i, j);
+                obtenerVecinos(n,i, j,vecinos,matriz);
+
+
                 numRandom = (rand() % 100 + 1) / 100;
                 //Reglas
-                if (celdaActual.estado == VERDE && algunVecinoRojo())
+                if (celdaActual.estado == VERDE && algunVecinoRojo(vecinos))
                 {   // Arbol sano -> Enfermo sin sintomas
-                    if (numRandom <= probabilidadContagio(i, j))
+                    if (numRandom <= probabilidadContagio(celdaActual,vecinos))
                     {
                         celdaNueva.estado = NARANJA;
                         celdaNueva.tiempo = 0;
@@ -374,27 +460,35 @@ int main(int argc, char *argv[])
                     celdaNueva.tiempo = 0;
                 }
 
-                matrizAvanzada[i][j] = celdaNueva;
+                matrizAvanzada[index] = celdaNueva;
             }
         }
 
-        generarMatrizResultado(n);
+        aux=matriz;
+        matriz=matrizAvanzada;
+        matrizAvanzada=aux;
         
-        printf("FIN DE SEMANA %d\n",semana);
+        printf("FIN DE SEMANA %d:\n",semana);
 
         for (int i = 0; i < n + 2; i++)
         {
             for (int j = 0; j < n + 2; j++)
             {
-                int estado = matriz[i][j].estado;
+                int estado = matriz[(n+2)*i+j].estado;
                 printf("%d  ", estado);
-                if (estado == AZUL)
+                /*if (estado == AZUL)
                     contadorAzul++;
                 if (estado == VERDE)
-                    contadorVerde++;
+                    contadorVerde++;*/
             }
             printf("\n");
         }
         printf("\n \n \n");
+
+
     }
+
+
+    free(matriz);
+    free(matrizAvanzada);
 }
