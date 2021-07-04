@@ -371,7 +371,7 @@ int main(int argc, char *argv[])
 
 
             
-        }else if(id_proc==(process-1)){ //envia su fila 1 y recibe la fila 0
+        }else if(id_proc==(process-1)){ //envia su fila i=1 y recibe la ultima fila del anterior
             
             prev=id_proc-1;
 
