@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <omp.h>
 
 #define MAXSIZE 1502 // Maximo tamaño de la Matriz
 
@@ -46,11 +47,13 @@ typedef struct celda
 
 //Input n: cantidad de celdas que contiene la matriz
 //n={200,800,1500}
-void inicializarMatriz(celda *ptr,int n)
+void inicializarMatriz(celda *ptr,int n,int numthreads)
 {
-    int rndom;
+    int rndom,i,j;
+
+    #pragma omp parallel for num_threads(numthreads) private(i) shared(ptr)
     //Primera y Ultima columna invalida
-    for (int i = 0; i < n + 2; i++)
+    for (i = 0; i < n + 2; i++)
     {
         ptr[(n+2)*i+0].estado = -1;
         ptr[(n+2)*i+0].edad = -1;
@@ -65,8 +68,9 @@ void inicializarMatriz(celda *ptr,int n)
         ptr[(n+2)*i+(n+1)].tiempo = -1;
     }
 
+    #pragma omp parallel for num_threads(numthreads) private(j) shared(ptr)
     //Primera y Ultima fila invalida
-    for (int j = 1; j < n + 1; j++)
+    for (j = 1; j < n + 1; j++)
     {
         ptr[(n+2)*0+j].estado = -1;
         ptr[(n+2)*0+j].edad = -1;
@@ -84,10 +88,11 @@ void inicializarMatriz(celda *ptr,int n)
     //Establece la secuencia con un seed aleatorio.
     srand(time(NULL));
 
+    #pragma omp parallel for collapse(2) num_threads(numthreads) private(i,j) shared(ptr)
     //Genero la matriz valida
-    for (int i = 1; i < n + 1; i++)
+    for (i = 1; i < n + 1; i++)
     {
-        for (int j = 1; j < n + 1; j++)
+        for (j = 1; j < n + 1; j++)
         {
             rndom = rand() % 101;
             //Sanos
@@ -158,8 +163,10 @@ void inicializarMatriz(celda *ptr,int n)
     }
 }
 
-void inicializarMatrizMatrizAvanzada(celda *matriz,int n){
-    for (int i = 0; i < n + 2; i++)
+void inicializarMatrizMatrizAvanzada(celda *matriz,int n,int numthreads){
+    int i,j;
+    #pragma omp parallel for num_threads(numthreads) private(i) shared(matriz)
+    for (i = 0; i < n + 2; i++)
     {
         matriz[(n+2)*i].estado = -1;
         matriz[(n+2)*i].edad = -1;
@@ -174,8 +181,9 @@ void inicializarMatrizMatrizAvanzada(celda *matriz,int n){
         matriz[(n+2)*i+n+1].tiempo = -1;
     }
 
+    #pragma omp parallel for num_threads(numthreads) private(j) shared(matriz)
     //Primera y Ultima fila invalida
-    for (int j = 1; j < n + 1; j++)
+    for (j = 1; j < n + 1; j++)
     {
         //fila 0
         matriz[j].estado = -1;
@@ -259,8 +267,11 @@ int main(int argc, char *argv[])
     //Variables
     float numRandom;
     celda celdaActual, celdaNueva;
+    double inicio,fin,tiempoTotal;
 
-    if (argc < 3)
+    inicio = omp_get_wtime();
+
+    if (argc < 4)
     {
         printf("Se necesitan mas argumentos\n");
         return 0;
@@ -272,6 +283,9 @@ int main(int argc, char *argv[])
     //Lee la cantidad de semanas
     int semanas = atoi(argv[2]);
 
+    // Lee la cantidad de threads
+    int numthreads = atoi(argv[3]);
+
     celda *matriz = malloc((n+2)*(n+2)*sizeof(celda));
     celda *matrizAvanzada = malloc((n+2)*(n+2)*sizeof(celda));
 
@@ -280,16 +294,19 @@ int main(int argc, char *argv[])
     //vecinos de cada celda
     celda vecinos[8];
 
-    //Inicializar matriz tiempo t
-    inicializarMatriz(matriz,n);
-    inicializarMatrizMatrizAvanzada(matrizAvanzada,n);
+    int i,j;
 
+    //Inicializar matriz tiempo t
+    inicializarMatriz(matriz,n,numthreads);
+    inicializarMatrizMatrizAvanzada(matrizAvanzada,n,numthreads);
+
+    #pragma omp parallel for num_threads(numthreads) private(i,j, vecinos) shared(matriz,matrizAvanzada)
     for (int semana = 0; semana < semanas; semana++){
         printf("INICIO DE SEMANA %d:\n",semana);
 
-        for (int i = 0; i < n + 2; i++)
+        for (i = 0; i < n + 2; i++)
         {
-            for (int j = 0; j < n + 2; j++)
+            for (j = 0; j < n + 2; j++)
             {
                 int estado = matriz[(n+2)*i+j].estado;
                 printf("%d  ", estado);
@@ -297,9 +314,9 @@ int main(int argc, char *argv[])
             printf("\n");
         }
 
-        for (int i = 1; i < n + 1; i++)
+        for (i = 1; i < n + 1; i++)
         {
-            for (int j = 1; j < n + 1; j++)
+            for (j = 1; j < n + 1; j++)
             {
 
                 int index=(n+2)*i+j;
@@ -396,4 +413,9 @@ int main(int argc, char *argv[])
 
     free(matriz);
     free(matrizAvanzada);
+
+    fin = omp_get_wtime();
+
+    tiempoTotal = fin-inicio;
+    printf("\nTiempo total: %f \n", tiempoTotal);
 }
