@@ -235,12 +235,14 @@ float susceptibilidad(int edad, int heridasAbiertas)
 float porcentajeVecinosSintomaticos(celda vecinos[])
 {
     int vecinosSintomaticos = 0; //Cantidad de celdas en estado rojo
+    int cantidadVecinos=0;
     for (int i = 0; i < 8; i++)
     {
         if (vecinos[i].estado == ROJO)
             vecinosSintomaticos++;
+        if (vecinos[i].estado != -1) cantidadVecinos++; 
     }
-    return (vecinosSintomaticos / 8);
+    return (vecinosSintomaticos / cantidadVecinos);
 }
 
 float probabilidadContagio(celda celdaActual,celda vecinos[])
