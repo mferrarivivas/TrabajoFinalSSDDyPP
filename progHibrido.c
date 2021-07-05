@@ -239,7 +239,6 @@ float porcentajeVecinosSintomaticos(celda vecinos[])
     int vecinosSintomaticos = 0; //Cantidad de celdas en estado rojo
     for (int i = 0; i < 8; i++)
     {
-
         if (vecinos[i].estado == ROJO)
             vecinosSintomaticos++;
     }
@@ -420,11 +419,10 @@ int main(int argc, char *argv[])
 
 
         }   
-
+        /*
         printf("%d INICIO DE SEMANA %d \n",id_proc,semana);
-
         imprimirMatriz(n,rows,matriz);
-
+        */
         #pragma omp parallel for collapse(2) num_threads(numthreads)
         for (int i = 1; i < rows + 1; i++)
         {
@@ -506,10 +504,11 @@ int main(int argc, char *argv[])
         aux=matriz;
         matriz=matrizAvanzada;
         matrizAvanzada=aux;
-        
+        /*
         printf("%d FIN DE SEMANA %d\n",id_proc,semana);
         imprimirMatriz(n,rows,matriz);
         printf("\n \n \n");
+        */
     }
 
     free(matriz);
