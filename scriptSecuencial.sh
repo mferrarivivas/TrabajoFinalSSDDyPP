@@ -10,7 +10,7 @@ sleep 2
 
 for n in {1..10}
     do
-        ./progSecuencial 200 2000 
+        ./progSecuencial 200 150 
 done
 
 printf "\nMatriz 800 X 800\n"
@@ -19,7 +19,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progSecuencial 800 1000 
+./progSecuencial 800 150 
 
 
 done
@@ -30,7 +30,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progSecuencial 1500 500 
+./progSecuencial 1500 150 
 
 
 done
@@ -43,7 +43,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 200 2000 2
+./progOpenMP 200 150 2
 
 
 done
@@ -54,7 +54,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 800 1000 2 
+./progOpenMP 800 150 2 
 
 
 done
@@ -65,7 +65,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 1500 500 2   
+./progOpenMP 1500 150 2   
 
 
 done
@@ -78,7 +78,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 200 2000 4
+./progOpenMP 200 150 4
 
 
 done
@@ -89,7 +89,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 800 1000 4
+./progOpenMP 800 150 4
 
 
 done
@@ -100,7 +100,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 1500 500 4   
+./progOpenMP 1500 150 4   
 
 
 done
@@ -113,7 +113,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 200 2000 8
+./progOpenMP 200 150 8
 
 
 done
@@ -124,7 +124,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 800 1000 8 
+./progOpenMP 800 150 8 
 
 
 done
@@ -135,7 +135,7 @@ sleep 2
 
 for n in {1..10}
 do
-./progOpenMP 1500 500 8   
+./progOpenMP 1500 150 8   
 
 
 done

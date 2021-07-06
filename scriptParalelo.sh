@@ -10,7 +10,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progMPI 200 2000
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
 done
 
 printf "\nMatriz 800 X 800\n"
@@ -20,7 +20,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progMPI 800 1000 
+mpirun -np 2 -f ./hostfile ./progMPI 800 150 
 
 done
 
@@ -31,7 +31,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progMPI 1500 500  
+mpirun -np 2 -f ./hostfile ./progMPI 1500 150  
 
 done
 
@@ -44,7 +44,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progMPI 200 2000
+mpirun -np 4 -f ./hostfile ./progMPI 200 150
 
 done
 
@@ -55,7 +55,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progMPI 800 1000 
+mpirun -np 4 -f ./hostfile ./progMPI 800 150 
 
 done
 
@@ -66,7 +66,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progMPI 1500 500  
+mpirun -np 4 -f ./hostfile ./progMPI 1500 150  
 
 done
 
@@ -79,7 +79,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progMPI 200 2000
+mpirun -np 10 -f ./hostfile ./progMPI 200 150
 
 done
 
@@ -90,7 +90,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progMPI 800 1000 
+mpirun -np 10 -f ./hostfile ./progMPI 800 150 
 
 done
 
@@ -101,7 +101,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progMPI 1500 500  
+mpirun -np 10 -f ./hostfile ./progMPI 1500 150  
 
 done
 
@@ -114,7 +114,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progHibrido 200 2000 2
+mpirun -np 2 -f ./hostfile ./progHibrido 200 150 2
 
 done
 
@@ -125,7 +125,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progHibrido 800 1000 2
+mpirun -np 2 -f ./hostfile ./progHibrido 800 150 2
 
 done
 
@@ -136,7 +136,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progHibrido 1500 500 2  
+mpirun -np 2 -f ./hostfile ./progHibrido 1500 150 2  
 
 done
 
@@ -149,7 +149,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progHibrido 200 2000 4
+mpirun -np 2 -f ./hostfile ./progHibrido 200 150 4
 
 done
 
@@ -160,7 +160,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progHibrido 800 1000 4
+mpirun -np 2 -f ./hostfile ./progHibrido 800 150 4
 
 done
 
@@ -171,7 +171,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progHibrido 1500 500 4    
+mpirun -np 2 -f ./hostfile ./progHibrido 1500 150 4    
 
 done
 
@@ -184,7 +184,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progHibrido 200 2000 2
+mpirun -np 4 -f ./hostfile ./progHibrido 200 150 2
 
 done
 
@@ -195,7 +195,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progHibrido 800 1000 2
+mpirun -np 4 -f ./hostfile ./progHibrido 800 150 2
 
 done
 
@@ -206,7 +206,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progHibrido 1500 500 2   
+mpirun -np 4 -f ./hostfile ./progHibrido 1500 150 2   
 
 done
 
@@ -219,7 +219,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progHibrido 200 2000 4
+mpirun -np 4 -f ./hostfile ./progHibrido 200 150 4
 
 done
 
@@ -230,7 +230,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progHibrido 800 1000 4
+mpirun -np 4 -f ./hostfile ./progHibrido 800 150 4
 
 done
 
@@ -241,7 +241,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 4 -f ./hostfile ./progHibrido 1500 500 4    
+mpirun -np 4 -f ./hostfile ./progHibrido 1500 150 4    
 
 done
 
@@ -254,7 +254,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progHibrido 200 2000 2
+mpirun -np 10 -f ./hostfile ./progHibrido 200 150 2
 
 done
 
@@ -265,7 +265,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progHibrido 800 1000 2
+mpirun -np 10 -f ./hostfile ./progHibrido 800 150 2
 
 done
 
@@ -276,7 +276,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progHibrido 1500 500 2   
+mpirun -np 10 -f ./hostfile ./progHibrido 1500 150 2   
 
 done
 
@@ -289,7 +289,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progHibrido 200 2000 4
+mpirun -np 10 -f ./hostfile ./progHibrido 200 150 4
 
 done
 
@@ -300,7 +300,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progHibrido 800 1000 4
+mpirun -np 10 -f ./hostfile ./progHibrido 800 150 4
 
 done
 
@@ -311,7 +311,7 @@ sleep 2
 
 for n in {1..10}
 do
-mpirun -np 10 -f ./hostfile ./progHibrido 1500 500 4    
+mpirun -np 10 -f ./hostfile ./progHibrido 1500 150 4    
 
 done
 
