@@ -410,11 +410,11 @@ int main(int argc, char *argv[])
 
 
         }   
-
+        /*
         printf("%d INICIO DE SEMANA %d \n",id_proc,semana);
 
         imprimirMatriz(n,rows,matriz);
-
+        */
     
         for (int i = 1; i < rows + 1; i++)
         {
@@ -496,10 +496,11 @@ int main(int argc, char *argv[])
         aux=matriz;
         matriz=matrizAvanzada;
         matrizAvanzada=aux;
-        
+        /*
         printf("%d FIN DE SEMANA %d\n",id_proc,semana);
         imprimirMatriz(n,rows,matriz);
         printf("\n \n \n");
+        */
     }
 
     free(matriz);

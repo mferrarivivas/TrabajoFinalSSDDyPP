@@ -304,17 +304,8 @@ int main(int argc, char *argv[])
 
     #pragma omp parallel for num_threads(numthreads) private(i,j, vecinos) shared(matriz,matrizAvanzada)
     for (int semana = 0; semana < semanas; semana++){
-        printf("INICIO DE SEMANA %d:\n",semana);
+        //printf("INICIO DE SEMANA %d:\n",semana);
 
-        for (i = 0; i < n + 2; i++)
-        {
-            for (j = 0; j < n + 2; j++)
-            {
-                int estado = matriz[(n+2)*i+j].estado;
-                printf("%d  ", estado);
-            }
-            printf("\n");
-        }
 
         for (i = 1; i < n + 1; i++)
         {
@@ -397,19 +388,6 @@ int main(int argc, char *argv[])
         aux=matriz;
         matriz=matrizAvanzada;
         matrizAvanzada=aux;
-        
-        printf("FIN DE SEMANA %d:\n",semana);
-
-        for (int i = 0; i < n + 2; i++)
-        {
-            for (int j = 0; j < n + 2; j++)
-            {
-                int estado = matriz[(n+2)*i+j].estado;
-                printf("%d  ", estado);
-            }
-            printf("\n");
-        }
-        printf("\n \n \n");
 
     }
 
