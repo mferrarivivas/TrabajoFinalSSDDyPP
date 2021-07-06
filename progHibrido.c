@@ -521,11 +521,9 @@ int main(int argc, char *argv[])
     if(id_proc==0){
         end=MPI_Wtime();
         tiempo=end-start;
-        printf(">>>>>FIN>>>> Tiempo en Paralelo: %f\n",tiempo);
+        printf(">>>>>FIN>>>> Tiempo Hibrido: %f\n",tiempo);
     }
 
-
     MPI_Finalize();
-
 
 }

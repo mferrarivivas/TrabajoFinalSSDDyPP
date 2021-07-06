@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <omp.h>
 
 #define MAXSIZE 1502 // Maximo tamaño de la Matriz
 
@@ -274,6 +275,10 @@ int main(int argc, char *argv[])
     //Lee la cantidad de semanas
     int semanas = atoi(argv[2]);
 
+    double start,end,tiempo;
+
+    start=omp_get_wtime();
+
     celda *matriz = malloc((n+2)*(n+2)*sizeof(celda));
     celda *matrizAvanzada = malloc((n+2)*(n+2)*sizeof(celda));
 
@@ -373,4 +378,10 @@ int main(int argc, char *argv[])
 
     free(matriz);
     free(matrizAvanzada);
+
+    end=omp_get_wtime();
+
+    tiempo=end-start;
+
+    printf(">>>>>FIN>>>> Tiempo en Secuencial: %f\n",tiempo);
 }
