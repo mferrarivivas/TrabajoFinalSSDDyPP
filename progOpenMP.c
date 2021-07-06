@@ -293,8 +293,10 @@ int main(int argc, char *argv[])
 
     celda *aux;
 
+
     //vecinos de cada celda
     celda vecinos[8];
+    
 
     int i,j;
 
@@ -302,11 +304,11 @@ int main(int argc, char *argv[])
     inicializarMatriz(matriz,n,numthreads);
     inicializarMatrizMatrizAvanzada(matrizAvanzada,n,numthreads);
 
-    #pragma omp parallel for num_threads(numthreads) private(i,j, vecinos) shared(matriz,matrizAvanzada)
+    
     for (int semana = 0; semana < semanas; semana++){
-        //printf("INICIO DE SEMANA %d:\n",semana);
+        
 
-
+        #pragma omp parallel for collapse(2) num_threads(numthreads) private(i,j,vecinos) shared(matriz,matrizAvanzada)
         for (i = 1; i < n + 1; i++)
         {
             for (j = 1; j < n + 1; j++)

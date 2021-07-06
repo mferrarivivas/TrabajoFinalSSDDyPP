@@ -92,7 +92,7 @@ void inicializarMatriz(int rows,int cols,celda *matriz,int numThreads)
 
 
     //Genero la matriz valida
-    #pragma omp parallel for collapse(2) num_threads(numthreads)
+    #pragma omp parallel for collapse(2) num_threads(numThreads)
     for (int i = 1; i < rows + 1; i++)
     {
         for (int j = 1; j < cols + 1; j++)
@@ -167,7 +167,7 @@ void inicializarMatriz(int rows,int cols,celda *matriz,int numThreads)
 }
 
 void inicializarMatrizMatrizAvanzada(int rows,int cols,celda *matriz,int numThreads){
-    #pragma omp parallel for num_threads(numthreads)
+    #pragma omp parallel for num_threads(numThreads)
     for (int i = 0; i < rows + 2; i++)
     {
         matriz[(cols+2)*i].estado = -1;
@@ -184,7 +184,7 @@ void inicializarMatrizMatrizAvanzada(int rows,int cols,celda *matriz,int numThre
     }
 
     //Primera y Ultima fila invalida
-    #pragma omp parallel for num_threads(numthreads)
+    #pragma omp parallel for num_threads(numThreads)
     for (int j = 1; j < cols + 1; j++)
     {
         //fila 0
@@ -424,7 +424,7 @@ int main(int argc, char *argv[])
         printf("%d INICIO DE SEMANA %d \n",id_proc,semana);
         imprimirMatriz(n,rows,matriz);
         */
-        #pragma omp parallel for collapse(2) num_threads(numthreads)
+        #pragma omp parallel for collapse(2) num_threads(numThreads)
         for (int i = 1; i < rows + 1; i++)
         {
             for (int j = 1; j < n + 1; j++)
