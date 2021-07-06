@@ -8,13 +8,10 @@ printf "\nMatriz 200 X 200\n"
 sleep 2
 
 
-counter=1
-while [ $counter -le 10 ]
-do
-./progSecuencial 200 2000 
-sleep 1
-((counter=counter+1))
-echo $counter
+for n in {1..10}
+    do
+        ./progSecuencial 200 2000 
+        #sleep 1
 done
 
 printf "\nMatriz 800 X 800\n"
