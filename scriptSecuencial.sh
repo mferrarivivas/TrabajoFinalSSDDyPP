@@ -25,7 +25,7 @@ while [ $counter -le 10 ]
 do
 ./progSecuencial 800 1000 
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 1500 X 1500\n"
@@ -37,7 +37,7 @@ while [ $counter -le 10 ]
 do
 ./progSecuencial 1500 500 
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\t\nOPNEMP CON 2 THREADS\n"
@@ -51,7 +51,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 200 2000 2
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 800 X 800\n"
@@ -63,7 +63,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 800 1000 2 
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 1500 X 1500\n"
@@ -75,7 +75,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 1500 500 2   
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\t\nOPNEMP CON 4 THREADS\n"
@@ -89,7 +89,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 200 2000 4
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 800 X 800\n"
@@ -101,7 +101,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 800 1000 4
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 1500 X 1500\n"
@@ -113,7 +113,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 1500 500 4   
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\t\nOPNEMP CON 8 THREADS\n"
@@ -127,7 +127,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 200 2000 8
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 800 X 800\n"
@@ -139,7 +139,7 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 800 1000 8 
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 1500 X 1500\n"
@@ -151,5 +151,5 @@ while [ $counter -le 10 ]
 do
 ./progOpenMP 1500 500 8   
 sleep 1
-((counter++))
+((counter=counter+1))
 done
