@@ -13,6 +13,7 @@ do
 mpirun -np 2 -f ./hostfile ./progMPI 200 2000
 sleep 1
 ((counter=counter+1))
+echo $counter
 done
 
 printf "\nMatriz 800 X 800\n"
