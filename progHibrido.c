@@ -357,8 +357,7 @@ int main(int argc, char *argv[])
     inicializarMatriz(rows,n,matriz,numThreads);
     inicializarMatrizMatrizAvanzada(rows,n,matrizAvanzada,numThreads);
     
-    //vecinos de cada celda
-    celda vecinos[8];
+    
 
     //Variables
     float numRandom;
@@ -430,6 +429,8 @@ int main(int argc, char *argv[])
         {
             for (int j = 1; j < n + 1; j++)
             {
+                //vecinos de cada celda
+                celda vecinos[8];
 
                 int index=(n+2)*i+j;
 
