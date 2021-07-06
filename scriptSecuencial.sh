@@ -13,7 +13,7 @@ while [ $counter -le 10 ]
 do
 ./progSecuencial 200 2000 
 sleep 1
-((counter++))
+((counter=counter+1))
 done
 
 printf "\nMatriz 800 X 800\n"
