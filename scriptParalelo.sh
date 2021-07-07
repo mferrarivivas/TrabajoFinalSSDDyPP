@@ -1,16 +1,11 @@
 #!/bin/bash
 # Basic while loop
-
-printf "\t\nMPI CON 2 PROCESOS\n\n"
-
-printf "\nMatriz 200 X 200\n"
-
-sleep 2
-
+printf "\t\n MPI CON 2 PROCESOS \n\n"
+printf "\n Matriz 200 X 200 \n"
 
 for n in {1..10}
 do
-mpirun -np 2 -f ./hostfile ./progMPI 200 150
+    mpirun -np 2 -f ./hostfile ./progMPI 200 150
 done
 
 printf "\nMatriz 800 X 800\n"
