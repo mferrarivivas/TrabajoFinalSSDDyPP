@@ -1,11 +1,17 @@
 #!/bin/bash
 # Basic while loop
 
-for n in {1..10}
-do
-mpirun -np 2 -f ./hostfile ./progMPI 200 150
-done
 
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
 printf "\nMatriz 800 X 800\n"
 
 sleep 2
