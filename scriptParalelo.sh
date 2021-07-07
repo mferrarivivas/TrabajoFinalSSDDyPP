@@ -5,7 +5,7 @@ printf "\n Matriz 200 X 200 \n"
 
 for n in {1..10}
 do
-    mpirun -np 2 -f ./hostfile ./progMPI 200 150
+mpirun -np 2 -f ./hostfile ./progMPI 200 150
 done
 
 printf "\nMatriz 800 X 800\n"
@@ -16,7 +16,6 @@ sleep 2
 for n in {1..10}
 do
 mpirun -np 2 -f ./hostfile ./progMPI 800 150 
-
 done
 
 printf "\nMatriz 1500 X 1500\n"
