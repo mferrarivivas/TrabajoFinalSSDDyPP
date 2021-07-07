@@ -1,7 +1,6 @@
 #!/bin/bash
 # Basic while loop
-printf "\t\n MPI CON 2 PROCESOS \n\n"
-printf "\n Matriz 200 X 200 \n"
+
 for n in {1..10}
 do
 mpirun -np 2 -f ./hostfile ./progMPI 200 150
